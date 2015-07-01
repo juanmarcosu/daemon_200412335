@@ -9,23 +9,23 @@
 # Short-Description: Daemon con fines Educativos - 200412335
 ### END INIT INFO
  
-# Source LSB helpers
+# Fuentes de los LSB helpers
 . /lib/lsb/init-functions
  
-# Process name (for display only)
+# Nombre del proceso (solo para mostrar)
 NAME=daemon_200412335
  
-# Where is the actual executable for the daemon
+# En donde se encuentra el ejecutable del daemon
 DAEMON="/home/juanmarcos/daemon_200412335/daemon_200412335.py"
 DAEMON_ARGS="/home/juanmarcos/daemon_200412335/daemon_200412335.ini"
  
-# The user:group under which the daemon must run
+# El usuario: grupo bajo el cual el daemon correra.
 RUN_AS_USER=juanmarcos
  
-# pid file for the daemon
+# pid del archivo del daemon.
 PIDFILE=/var/run/daemon_200412335.pid
  
-# If the daemon is not there, then exit.
+# Si no se encuentra el daemon, entonces salir.
 if ! [ -x ${DAEMON} ] ; then
     log_failure_msg "No se puede encontrar ejecutable en ${DAEMON}"
     exit 1
@@ -33,16 +33,16 @@ fi
  
 case $1 in
     start)
-        # Check if pidfile exists
+        # Verificar si el archivo del pid existe.
         if [ -e ${PIDFILE} ]; then
-            # Check the actual status of process
+            # Verificar el estatus actual del proceso.
             status_of_proc -p ${PIDFILE} ${DAEMON} ${NAME} && status="0" || status="$?"
-            # If the status is successfull, no need to start again.
+            # Si el estatus es exitoso, no es necesario volverlo a iniciar.
             [ ${status} = "0" ] && exit 0
         fi
-        # Start the daemon.
+        # Iniciar daemon.
         log_daemon_msg "Iniciando ${NAME}" 
-        # Start the daemon with the help of start-stop-daemon
+        # Iniciar el daemon con la ayuda de start-stop-daemon
         start-stop-daemon -S --quiet --oknodo --pidfile ${PIDFILE} --make-pidfile --background \
             --chuid ${RUN_AS_USER} --startas ${DAEMON} -- ${DAEMON_ARGS}
         if [ "$?" == "0" ]; then
@@ -73,7 +73,7 @@ case $1 in
         $0 stop && sleep 3 && $0 start
         ;;
     status)
-        # Check the status of the process.
+        # Verificar el estatus del proceso.
         if [ -e ${PIDFILE} ]; then
             status_of_proc -p ${PIDFILE} ${DAEMON} ${NAME} && exit 0 || exit $?
         else
@@ -95,8 +95,8 @@ case $1 in
         fi
         ;;
     *)
-        # Invalid argument, print the usage message.
-        echo "Para uso: $0 {start|stop|restart|reload|status}"
+        # Argumento Invalido, pintar este mensaje.
+        echo "Modo de uso: $0 {start|stop|restart|reload|status}"
         exit 2
         ;;
 esac

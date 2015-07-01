@@ -44,24 +44,24 @@ def app(environ, start_response):
  
 if __name__ == '__main__':
     
-    # Install signal handlers 
+    # Instalar manejadores de senial 
  
     signal.signal(signal.SIGHUP, handle_reload)
     signal.signal(signal.SIGTERM, handle_stop)
     signal.signal(signal.SIGINT, handle_stop)
     
-    # Read configuration, instantiate server
+    # Leer Configuracion, instanciar Servidor
  
     read_config()
     httpd = make_server('', 8088, app)
     log1.info('Servicio corriendo en puerto 8088...')
     
-    # Prepare a thread to handle server's shutdown
-    # Note: The shutdown method must be invoked from a different thread
-    # than the one that runs the server's main loop.
+    # Preparar un hilo para manejar el apagado del servidor
+    # Nota: El metodo de apagado tiene que ser invocado desde un hilo diferente
+    # al hilo al que esta corriendo el loop principal del servidor.
     
     shutdown = threading.Thread(target=httpd.shutdown) 
  
-    # Serve
+    # Prestar Servicio
  
     httpd.serve_forever()
